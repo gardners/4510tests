@@ -1,0 +1,78 @@
+
+-------------------------------------
+TMPview v1.3
+-------------------------------------
+
+    FEAT: The default value for the source tab width is now taken from the
+          input file instead of being always nine (9). [0000122]
+    FEAT: "--unnamed-hex" added; when specified TMPview will output hex
+          notation instead of the default decimal for un-named bastext tokens.
+    FEAT: "--petscii-dec" and "--petscii-hex" added; when specified TMPview
+          will output *all* PETSCII-only characters (those that cannot be
+          displayed rationally in ASCII output) to bastext tokens in either
+          decimal or hex notation rather than their named counterparts.
+    FEAT: "--byte-dec" and "--byte-hex" apply to single character literals.
+    FEAT: "--byte-columns" added; the given value sets how many values per
+          line the "--byte-dec" and "--byte-hex" features output.
+    FEAT: "--stats-detail" and "--stats-wild" added to display interesting
+          and extremely critical statistical output, respectively.
+    CHNG: "--screen" now regards values 0-63 as potential screencodes but
+          only converts strings where every character qualifies.
+    BUG:  corrected tabbed output when --tab-width was 0
+    BUG:  bastext token {cm o} is no longer output as {cm d}  [0000123]
+    BUG:  bastext token {purple} is no longer output as {156}  [0000124]
+    BUG:  handle the fake '_' character properly in quoted strings and
+          macro bodies.
+    BUG:  .include filenames are now translated.
+
+
+
+-------------------------------------
+TMPview v1.2
+-------------------------------------
+
+    FEAT: Some error output was made more clear/useful to help debug future
+          issues that may arise with additional input files
+    BUG:  brk is now recognized/translated properly.
+    BUG:  labels on lines with a program counter assignment were omitted.
+    BUG:  parser is more tolerant of source code with an odd/corrupt label
+          table - null label entries are skipped
+
+
+
+-------------------------------------
+TMPview v1.1
+-------------------------------------
+
+    FEAT: Default behaviour when translating string and character literals
+           is to encode non-printable ASCII output into tokens 'compatible'
+           with tok64/bastext (e.g., "{reverse off}"). Two additional options
+           are available to change this behaviour: "-b"/"--byte-dec" will
+           translate all string/character literals into sequences of .byte
+           statements using decimal notation. "-B"/"--byte-hex" will perform
+           a similar translation, outputting in hex notation. TMPview would
+           formerly ignore "non-printable" ASCII output.
+    FEAT: New option, "-S"/"--screen", to translate .text/.null/.shift
+           statements into .screen statements. This attempts to be smart
+           about identifying those string literals that appear to consist
+           of screencodes instead of so-called "chrout" PETSCII.
+    FEAT: "-i"/"--in" not required ("tmpview <file>" works)
+    FEAT: If an input filename is not specified using "-i"/"--in", nor taken
+           from a loose argument as above, input will be taken from stdin.
+    FEAT: Added identification and translation of sources saved by "Turbo
+           Assembler Professional v1.1lm" by Mr. Fiz/Samar, a plain turbo
+           variant with sources starting at $8a00.
+    FEAT: Added identification (but not translation) of sources saved by
+           "Turbo Macro Cross Assembler v1.0" by Jolz/Onslaught, a
+           substantial modification of plain turbo with sources starting
+           at $87ff.
+    FEAT: Added recognition of extra DTV v2 opcodes [0000110].
+    FEAT: "--omit-source" added as a ditto for "-O".
+    BUG:  bit absolute opcodes were incorrectly output as x indexed [0000091]
+    BUG:  some command line options could cause abnormal termination at
+           least on windows (e.g. "-o" without a corresponding filename)
+           [0000090]
+    BUG:  accumulator addressed opcodes (e.g. lsr, rol) now more accurately
+           mimic the output from TMP/Turbo Assembler by including the 'a'
+           (e.g. "lsr a" instead of just "lsr").
+    BUG:  sometimes the last source code line was omitted from output.
