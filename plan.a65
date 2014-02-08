@@ -1,0 +1,74 @@
+	 .include "test_top.a65"
+
+         .byte 145,"PLAN"
+
+	 .include "test_prepare.a65"
+
+         ; perform one test
+next:     ; expect data byte to be in results
+         lda db
+         sta dr
+
+         ; expect A and data byte should be identical
+	 lda db
+         sta ar
+
+         ; expect X to be the same in the results
+         lda xb
+         sta xr
+
+         ; expect y to be the same in the results
+         lda yb
+         sta yr
+
+         ; expect Z to be the same in the results
+         lda zb
+         sta zr
+
+         ; expect processor flags to have B flag set and E flag set
+         lda pb
+         ora #%00110000
+	 and #%01111101
+         tax
+         lda dr
+         cmp #0
+         bne nozero
+         txa
+         ora #%00000010
+         tax
+         lda dr
+nozero:  asl
+         bcc noneg
+         txa
+         ora #%10000000
+         tax
+noneg:   stx pr
+
+         ; expect SP to be one more than it started
+	 ; but in practice, the value will be the same, because we will be pulling
+	 ; a byte off that we have pushed
+         ldx sb
+         txs
+         stx sr
+
+	 ; push data byte onto stack to be pulled off by the instruction
+	 lda db
+	 pha	 
+
+	 .include "test_setup.a65"
+
+         ; test instruction
+cmd:     pla
+
+	 .include "test_record.a65"
+
+	 ; for stack pull instructions, data value is the appropriate register
+	 lda aa
+         sta da
+
+	 .include "test_check.a65"
+
+	 ; name of next test
+name:    .byte "PLXN"
+
+	 .include "test_common.a65"
