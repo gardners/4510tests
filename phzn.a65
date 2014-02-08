@@ -1,6 +1,6 @@
 	 .include "test_top.a65"
 
-         .byte 145,"PHYN"
+         .byte 145,"PHZN"
 
 	 .include "test_prepare.a65"
 
@@ -41,6 +41,14 @@ next:     ; expect data byte to be in results
 
          ; test instruction
 cmd:      phz
+
+	  .include "test_record.a65"
+
+         ; for stack instructions, data value is the byte pushed
+         ; so pull from the stack
+         inx
+         lda $0100,x
+         sta da
 
 	  .include "test_check.a65"
 

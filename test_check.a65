@@ -1,22 +1,4 @@
 
-         ; save register state after test instruction
-         php
-         cld
-         sta aa
-         stx xa
-         sty ya
-	 stz za
-         pla
-         sta pa
-         tsx
-         stx sa
-
-         ; for stack instructions, data value is the byte pushed
-         ; so pull from the stack
-         inx
-         lda $0100,x
-         sta da
-
          ; check that result matches
          jsr check
 

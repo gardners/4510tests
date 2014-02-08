@@ -1,0 +1,12 @@
+
+         ; save register state after test instruction
+         php
+         cld
+         sta aa
+         stx xa
+         sty ya
+	 stz za
+         pla
+         sta pa
+         tsx
+         stx sa

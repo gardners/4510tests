@@ -42,6 +42,14 @@ next:     ; expect data byte to be in results
          ; test instruction
 cmd:      phx
 
+	  .include "test_record.a65"
+
+         ; for stack instructions, data value is the byte pushed
+         ; so pull from the stack
+         inx
+         lda $0100,x
+         sta da
+
 	  .include "test_check.a65"
 
 	  ; name of next test
