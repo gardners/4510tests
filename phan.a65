@@ -1,0 +1,371 @@
+	 .word $0801
+	 .org $0801
+
+	 .scope
+	 .word _next, 10                       ; Next line and current line number
+	 .byte $97, "2,0:", $9e, " 2014", $AA, "65",0      ; POKE 2,0 : SYS 2014+65
+_next:	 .word 0
+
+	 .checkpc 2079
+	 .advance 2079
+
+	 ; print name of this test
+         jsr print
+         .byte 13
+         .byte 145,"phan"
+         .byte 0
+
+         ; initialise register contents
+         ; why these values?
+         lda #%00011011
+         sta db
+         lda #%11000110
+         sta ab
+         lda #%10110001
+         sta xb
+         lda #%01101100
+         sta yb
+         lda #0
+	 sta zb
+         sta pb
+
+         ; save stack and SP
+         tsx
+         stx sb
+         stx saves+1
+         ldx #0
+s0:       lda $0100,x
+         sta $1000,x
+         inx
+         bne s0
+
+         ; prepare to start tests
+         lda #0
+         sta db
+
+         ; perform one test
+next:     ; expect data byte to be in results
+         lda db
+         sta dr
+
+         ; expect A to be the same in the results
+         sta ab
+         sta ar
+
+         ; expect X to be the same in the results
+         lda xb
+         sta xr
+
+         ; expect Y to be the same in the results
+         lda yb
+         sta yr
+
+         ; expect Z to be the same in the results
+         lda zb
+         sta zr
+
+         ; expect processor flags to have B flag set and E flag set
+         lda pb
+         ora #%00110000
+         sta pr
+
+         ; expect SP to be one less than it started
+         ldx sb
+         txs
+         dex
+         stx sr
+
+         ; load registers for test
+	 see
+         lda pb
+         pha
+         lda ab
+         ldx xb
+         ldy yb
+	 ldz zb
+         plp
+
+         ; test instruction
+cmd:      pha
+
+         ; save register state after test instruction
+         php
+         cld
+         sta aa
+         stx xa
+         sty ya
+	 stz za
+         pla
+         sta pa
+         tsx
+         stx sa
+
+         ; for stack instructions, data value is the byte pushed
+         ; so pull from the stack
+         inx
+         lda $0100,x
+         sta da
+
+         ; check that result matches
+         jsr check
+
+         ; update registers for next test
+         dec sb
+         inc db
+         ; if not finished, then do next test
+jmpnext: bne next
+         inc pb
+         bne jmpnext
+
+         ; restore all registers and stack
+saves:   ldx #0
+         txs
+         ldx #0
+s1:      lda $1000,x
+         sta $0100,x
+         inx
+         bne s1
+
+         ; announce success
+         jsr print
+         .byte " - ok"
+         .byte 13,0
+         ; decide whether to auto-load next
+         ; test
+         lda 2
+         beq load
+wait:    jsr $ffe4
+         beq wait
+         jmp $8000
+
+         ; load next test
+load:    inc $d020
+         jsr print
+name:    .byte "plan"
+nameend: 
+         .byte 0
+         lda #0
+         sta $0a
+         sta $b9
+         lda #nameend-name
+         sta $b7
+         lda #<name
+         sta $bb
+         lda #>name
+         sta $bc
+         pla
+         pla
+         jmp $e16f
+
+db:      .byte 0
+ab:      .byte 0
+xb:      .byte 0
+yb:      .byte 0
+zb:      .byte 0
+pb:      .byte 0
+sb:      .byte 0
+da:      .byte 0
+aa:      .byte 0
+xa:      .byte 0
+ya:      .byte 0
+za:      .byte 0
+pa:      .byte 0
+sa:      .byte 0
+dr:      .byte 0
+ar:      .byte 0
+xr:      .byte 0
+yr:      .byte 0
+zr:      .byte 0
+pr:      .byte 0
+sr:      .byte 0
+
+check:   ; check that
+         lda da
+         cmp dr
+         bne error
+         lda aa
+         cmp ar
+         bne error
+         lda xa
+         cmp xr
+         bne error
+         lda ya
+         cmp yr
+         bne error
+         lda za
+         cmp zr
+         bne error
+         lda pa
+         cmp pr
+         bne error
+         lda sa
+         cmp sr
+         bne error
+         rts
+
+error:   jsr print
+         .byte 13
+         .byte "before  ", 0
+         ldx #<db
+         ldy #>db
+         jsr showregs
+         jsr print
+         .byte 13
+         .byte "after   ", 0
+         ldx #<da
+         ldy #>da
+         jsr showregs
+         jsr print
+         .byte 13
+         .byte "right   ", 0
+         ldx #<dr
+         ldy #>dr
+         jsr showregs
+         lda #13
+         jsr $ffd2
+wait2:    jsr $ffe4
+         beq wait2
+         cmp #3
+         beq stop
+         rts
+stop:    lda 2
+         beq basic
+         jmp $8000
+basic:   jmp ($a002)
+
+showregs: stx 172
+         sty 173
+         ldy #0
+         lda (172),y
+         jsr hexb
+         lda #32
+         jsr $ffd2
+         lda #32
+         jsr $ffd2
+         iny
+         lda (172),y
+         jsr hexb
+         lda #32
+         jsr $ffd2
+         iny
+         lda (172),y
+         jsr hexb
+         lda #32
+         jsr $ffd2
+         iny
+         lda (172),y
+         jsr hexb
+         lda #32
+         jsr $ffd2
+         iny
+         lda (172),y
+         jsr hexb
+         lda #32
+         jsr $ffd2
+         iny
+         lda (172),y
+         ldx #'n
+         asl
+         bcc ok7
+         ldx #'N
+ok7:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'v
+         asl
+         bcc ok6
+         ldx #'V
+ok6:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'e
+         asl
+         bcc ok5
+         ldx #'E
+ok5:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'b
+         asl
+         bcc ok4
+         ldx #'B
+ok4:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'d
+         asl
+         bcc ok3
+         ldx #'D
+ok3:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'i
+         asl
+         bcc ok2
+         ldx #'I
+ok2:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'z
+         asl
+         bcc ok1
+         ldx #'Z
+ok1:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'c
+         asl
+         bcc ok0
+         ldx #'C
+ok0:     pha
+         txa
+         jsr $ffd2
+         pla
+         lda #32
+         jsr $ffd2
+         iny
+         lda (172),y
+	 ; fall through to print last byte
+
+hexb:    ; print a byte as hex
+	 pha
+         lsr
+         lsr
+         lsr
+         lsr
+         jsr hexn
+         pla
+         and #$0f
+hexn:    ora #$30
+         cmp #$3a
+         bcc hexn0
+         adc #6
+hexn0:   jmp $ffd2
+
+print:   pla
+         sta print0+1
+         pla
+         sta print0+2
+         ldx #1
+print0:  lda $ffff,x    ; address gets overwritten
+         beq print1
+         jsr $ffd2
+         inx
+         bne print0
+print1:  sec
+         txa
+         adc print0+1
+         sta print2+1
+         lda #0
+         adc print0+2
+         sta print2+2
+print2:  jmp $ffff      ; address gets overwritten
+
+	 .scend
