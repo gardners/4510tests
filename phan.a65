@@ -205,19 +205,19 @@ check:   ; check that
 
 error:   jsr print
          .byte 13
-         .byte "before  ", 0
+         .byte "BEFORE  ", 0
          ldx #<db
          ldy #>db
          jsr showregs
          jsr print
          .byte 13
-         .byte "after   ", 0
+         .byte "AFTER   ", 0
          ldx #<da
          ldy #>da
          jsr showregs
          jsr print
          .byte 13
-         .byte "right   ", 0
+         .byte "RIGHT   ", 0
          ldx #<dr
          ldy #>dr
          jsr showregs
