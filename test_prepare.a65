@@ -1,0 +1,31 @@
+
+         .byte 0
+
+         ; initialise register contents
+         ; why these values?
+         lda #%00011011
+         sta db
+         lda #%11000110
+         sta ab
+         lda #%10110001
+         sta xb
+         lda #%01101100
+         sta yb
+         lda #%00111001
+	 sta zb
+	 lda #0
+         sta pb
+
+         ; save stack and SP
+         tsx
+         stx sb
+         stx saves+1
+         ldx #0
+s0:       lda $0100,x
+         sta $1000,x
+         inx
+         bne s0
+
+         ; prepare to start tests
+         lda #0
+         sta db

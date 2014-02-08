@@ -1,6 +1,6 @@
 	 .include "test_top.a65"
 
-         .byte 145,"PHAN"
+         .byte 145,"PHYN"
 
 	 .include "test_prepare.a65"
 
@@ -9,18 +9,18 @@ next:     ; expect data byte to be in results
          lda db
          sta dr
 
-         ; expect A and data byte should be identical
+         ; expect Y and data byte should be identical
 	 lda db
-         sta ab
+         sta yb
+         sta yr
+
+         ; expect A to be the same in the results
+         lda ab
          sta ar
 
          ; expect X to be the same in the results
          lda xb
          sta xr
-
-         ; expect Y to be the same in the results
-         lda yb
-         sta yr
 
          ; expect Z to be the same in the results
          lda zb
@@ -40,11 +40,12 @@ next:     ; expect data byte to be in results
 	 .include "test_setup.a65"
 
          ; test instruction
-cmd:      pha
-
+	  
+cmd:      phy
+	  stz $0427
 	  .include "test_check.a65"
 
 	  ; name of next test
-name:    .byte "PHXN"
+name:    .byte "PHZN"
 
 	 .include "test_common.a65"

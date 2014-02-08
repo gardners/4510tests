@@ -1,0 +1,9 @@
+         ; load registers for test
+	 see
+         lda pb
+         pha
+         lda ab
+         ldx xb
+         ldy yb
+	 ldz zb
+         plp

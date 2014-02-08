@@ -1,0 +1,228 @@
+	 
+nameend: 
+         .byte 0
+         lda #0
+         sta $0a
+         sta $b9
+         lda #nameend-name
+         sta $b7
+         lda #<name
+         sta $bb
+         lda #>name
+         sta $bc
+         pla
+         pla
+         jmp $e16f
+
+db:      .byte 0
+ab:      .byte 0
+xb:      .byte 0
+yb:      .byte 0
+zb:      .byte 0
+pb:      .byte 0
+sb:      .byte 0
+da:      .byte 0
+aa:      .byte 0
+xa:      .byte 0
+ya:      .byte 0
+za:      .byte 0
+pa:      .byte 0
+sa:      .byte 0
+dr:      .byte 0
+ar:      .byte 0
+xr:      .byte 0
+yr:      .byte 0
+zr:      .byte 0
+pr:      .byte 0
+sr:      .byte 0
+
+check:   ; check that
+         lda da
+         cmp dr
+         bne error
+         lda aa
+         cmp ar
+         bne error
+         lda xa
+         cmp xr
+         bne error
+         lda ya
+         cmp yr
+         bne error
+         lda za
+         cmp zr
+         bne error
+         lda pa
+         cmp pr
+         bne error
+         lda sa
+         cmp sr
+         bne error
+         rts
+
+error:   jsr print
+         .byte 13
+         .byte "BEFORE  ", 0
+         ldx #<db
+         ldy #>db
+         jsr showregs
+         jsr print
+         .byte 13
+         .byte "AFTER   ", 0
+         ldx #<da
+         ldy #>da
+         jsr showregs
+         jsr print
+         .byte 13
+         .byte "RIGHT   ", 0
+         ldx #<dr
+         ldy #>dr
+         jsr showregs
+         lda #13
+         jsr $ffd2
+wait2:    jsr $ffe4
+         beq wait2
+         cmp #3
+         beq stop
+         rts
+stop:    lda 2
+         beq basic
+         jmp $8000
+basic:   jmp ($a002)
+
+showregs: stx 172
+         sty 173
+         ldy #0
+         lda (172),y
+         jsr hexb
+         lda #32
+         jsr $ffd2
+         lda #32
+         jsr $ffd2
+         iny
+         lda (172),y
+         jsr hexb
+         lda #32
+         jsr $ffd2
+         iny
+         lda (172),y
+         jsr hexb
+         lda #32
+         jsr $ffd2
+         iny
+         lda (172),y
+         jsr hexb
+         lda #32
+         jsr $ffd2
+         iny
+         lda (172),y
+         jsr hexb
+         lda #32
+         jsr $ffd2
+         iny
+         lda (172),y
+         ldx #'N
+         asl
+         bcc ok7
+         ldx #'n
+ok7:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'V
+         asl
+         bcc ok6
+         ldx #'v
+ok6:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'E
+         asl
+         bcc ok5
+         ldx #'e
+ok5:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'B
+         asl
+         bcc ok4
+         ldx #'b
+ok4:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'D
+         asl
+         bcc ok3
+         ldx #'d
+ok3:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'I
+         asl
+         bcc ok2
+         ldx #'i
+ok2:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'Z
+         asl
+         bcc ok1
+         ldx #'z
+ok1:     pha
+         txa
+         jsr $ffd2
+         pla
+         ldx #'C
+         asl
+         bcc ok0
+         ldx #'c
+ok0:     pha
+         txa
+         jsr $ffd2
+         pla
+         lda #32
+         jsr $ffd2
+         iny
+         lda (172),y
+	 ; fall through to print last byte
+
+hexb:    ; print a byte as hex
+	 pha
+         lsr
+         lsr
+         lsr
+         lsr
+         jsr hexn
+         pla
+         and #$0f
+hexn:    ora #$30
+         cmp #$3a
+         bcc hexn0
+         adc #6
+hexn0:   jmp $ffd2
+
+print:   pla
+         sta print0+1
+         pla
+         sta print0+2
+         ldx #1
+print0:  lda $ffff,x    ; address gets overwritten
+         beq print1
+         jsr $ffd2
+         inx
+         bne print0
+print1:  sec
+         txa
+         adc print0+1
+         sta print2+1
+         lda #0
+         adc print0+2
+         sta print2+2
+print2:  jmp $ffff      ; address gets overwritten
+
+	 .scend
