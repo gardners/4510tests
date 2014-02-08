@@ -12,7 +12,7 @@ _next:	 .word 0
 	 ; print name of this test
          jsr print
          .byte 13
-         .byte 145,"phan"
+         .byte 145,"PHAN"
          .byte 0
 
          ; initialise register contents
@@ -128,7 +128,7 @@ s1:      lda $1000,x
 
          ; announce success
          jsr print
-         .byte " - ok"
+         .byte " - OK"
          .byte 13,0
          ; decide whether to auto-load next
          ; test
@@ -141,7 +141,7 @@ wait:    jsr $ffe4
          ; load next test
 load:    inc $d020
          jsr print
-name:    .byte "plan"
+name:    .byte "PLAN"
 nameend: 
          .byte 0
          lda #0
