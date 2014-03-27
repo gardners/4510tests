@@ -1,0 +1,4 @@
+         ; expect SP to be one less than it started
+         ldx sbefore
+         dex
+         stx sresult

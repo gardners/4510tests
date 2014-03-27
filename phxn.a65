@@ -7,10 +7,6 @@
          ; perform one test
 next:    
 	 .include "test_setup_push.a65"
-         ; expect SP to be one less than it started
-         ldx sbefore
-         dex
-         stx sresult
 
 	 ; expect result to equal contents of X
 	 lda xbefore
