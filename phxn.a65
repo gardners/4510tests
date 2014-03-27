@@ -1,58 +1,34 @@
 	 .include "test_top.a65"
 
-         .byte 145,"PHXN"
+         .byte 145,"$DB - PHXN"
 
 	 .include "test_prepare.a65"
 
          ; perform one test
-next:     ; expect data byte to be in results
-         lda db
-         sta dr
-
-         ; expect X and data byte should be identical
-	 lda db
-         sta xb
-         sta xr
-
-         ; expect A to be the same in the results
-         lda ab
-         sta ar
-
-         ; expect Y to be the same in the results
-         lda yb
-         sta yr
-
-         ; expect Z to be the same in the results
-         lda zb
-         sta zr
-
-         ; expect processor flags to have B flag set and E flag set
-         lda pb
-         ora #%00110000
-         sta pr
-
+next:    
+	 .include "test_setup_push.a65"
          ; expect SP to be one less than it started
-         ldx sb
-         txs
+         ldx sbefore
          dex
-         stx sr
+         stx sresult
+
+	 ; expect result to equal contents of X
+	 lda xbefore
+	 sta dresult
 
 	 .include "test_setup.a65"
 
+cmd:
          ; test instruction
-cmd:      phx
+    	 phx
 
-	  .include "test_record.a65"
+	 .include "test_record.a65"
 
-         ; for stack instructions, data value is the byte pushed
-         ; so pull from the stack
-         inx
-         lda $0100,x
-         sta da
+	 .include "test_result_from_push.a65"
 
-	  .include "test_check.a65"
+	 .include "test_check.a65"
 
-	  ; name of next test
+	 ; name of next test
 name:    .byte "PHYN"
 
 	 .include "test_common.a65"

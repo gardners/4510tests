@@ -14,69 +14,75 @@ nameend:
          pla
          jmp $e16f
 
-db:      .byte 0
-ab:      .byte 0
-xb:      .byte 0
-yb:      .byte 0
-zb:      .byte 0
-pb:      .byte 0
-sb:      .byte 0
-da:      .byte 0
-aa:      .byte 0
-xa:      .byte 0
-ya:      .byte 0
-za:      .byte 0
-pa:      .byte 0
-sa:      .byte 0
-dr:      .byte 0
-ar:      .byte 0
-xr:      .byte 0
-yr:      .byte 0
-zr:      .byte 0
-pr:      .byte 0
-sr:      .byte 0
+dbefore:      .byte 0
+abefore:      .byte 0
+bbefore:      .byte 0
+xbefore:      .byte 0
+ybefore:      .byte 0
+zbefore:      .byte 0
+pbefore:      .byte 0
+sbefore:      .byte 0
+dafter:      .byte 0
+aafter:      .byte 0
+bafter:      .byte 0
+xafter:      .byte 0
+yafter:      .byte 0
+zafter:      .byte 0
+pafter:      .byte 0
+safter:      .byte 0
+dresult:      .byte 0
+aresult:      .byte 0
+bresult:      .byte 0
+xresult:      .byte 0
+yresult:      .byte 0
+zresult:      .byte 0
+presult:      .byte 0
+sresult:      .byte 0
 
 check:   ; check that
-         lda da
-         cmp dr
+         lda dafter
+         cmp dresult
          bne error
-         lda aa
-         cmp ar
+         lda aafter
+         cmp aresult
          bne error
-         lda xa
-         cmp xr
+         lda bafter
+         cmp bresult
          bne error
-         lda ya
-         cmp yr
+         lda xafter
+         cmp xresult
          bne error
-         lda za
-         cmp zr
+         lda yafter
+         cmp yresult
          bne error
-         lda pa
-         cmp pr
+         lda zafter
+         cmp zresult
          bne error
-         lda sa
-         cmp sr
+         lda pafter
+         cmp presult
+         bne error
+         lda safter
+         cmp sresult
          bne error
          rts
 
 error:   jsr print
          .byte 13
          .byte "BEFORE  ", 0
-         ldx #<db
-         ldy #>db
+         ldx #<dbefore
+         ldy #>dbefore
          jsr showregs
          jsr print
          .byte 13
          .byte "AFTER   ", 0
-         ldx #<da
-         ldy #>da
+         ldx #<dafter
+         ldy #>dafter
          jsr showregs
          jsr print
          .byte 13
          .byte "RIGHT   ", 0
-         ldx #<dr
-         ldy #>dr
+         ldx #<dresult
+         ldy #>dresult
          jsr showregs
          lda #13
          jsr $ffd2
@@ -97,6 +103,11 @@ showregs: stx 172
          jsr hexb
          lda #32
          jsr $ffd2
+         lda #32
+         jsr $ffd2
+         iny
+         lda (172),y
+         jsr hexb
          lda #32
          jsr $ffd2
          iny

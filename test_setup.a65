@@ -1,9 +1,11 @@
          ; load registers for test
 	 see
-         lda pb
+         lda pbefore
          pha
-         lda ab
-         ldx xb
-         ldy yb
-	 ldz zb
+	 lda bbefore
+	 tab
+         lda abefore
+         ldx xbefore
+         ldy ybefore
+	 ldz zbefore
          plp

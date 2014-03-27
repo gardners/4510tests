@@ -3,11 +3,11 @@
          jsr check
 
          ; update registers for next test
-         dec sb
-         inc db
+         dec sbefore
+         inc dbefore
          ; if not finished, then do next test
 jmpnext: bne next
-         inc pb
+         inc pbefore
          bne jmpnext
 
          ; restore all registers and stack

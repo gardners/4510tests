@@ -2,11 +2,13 @@
          ; save register state after test instruction
          php
          cld
-         sta aa
-         stx xa
-         sty ya
-	 stz za
+         sta aafter
+	 tab
+	 sta bafter
+         stx xafter
+         sty yafter
+	 stz zafter
          pla
-         sta pa
+         sta pafter
          tsx
-         stx sa
+         stx safter

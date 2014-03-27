@@ -3,29 +3,37 @@
 
          ; initialise register contents
          ; why these values?
+	 ; (are they all linearly independent?)
          lda #%00011011
-         sta db
+         sta dbefore
+	 sta dresult
          lda #%11000110
-         sta ab
+         sta abefore
+	 sta aresult
          lda #%10110001
-         sta xb
+	 lda #$00
+	 sta bbefore
+	 sta bresult
+         sta xbefore
+	 sta xresult
          lda #%01101100
-         sta yb
+         sta ybefore
+	 sta yresult
          lda #%00111001
-	 sta zb
-	 lda #0
-         sta pb
+	 sta zbefore
+	 sta zresult
+	 ; default to expecting B and E flags to be set
+	 lda #%00110000
+         sta pbefore
+	 sta presult
 
          ; save stack and SP
          tsx
-         stx sb
+         stx sbefore
+	 stx sresult
          stx saves+1
          ldx #0
 s0:       lda $0100,x
          sta $1000,x
          inx
          bne s0
-
-         ; prepare to start tests
-         lda #0
-         sta db
