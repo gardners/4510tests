@@ -1,6 +1,6 @@
 	 .include "test_top.a65"
 
-         .byte 145,"$DB - PHXN"
+         .byte 145,"$DA - PHXN"
 
 	 .include "test_prepare.a65"
 
