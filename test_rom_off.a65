@@ -1,0 +1,5 @@
+         lda #$7F
+         sta $dc0d
+         lda $dc0d
+         lda #$30
+         sta $01

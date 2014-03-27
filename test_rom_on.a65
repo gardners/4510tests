@@ -1,0 +1,4 @@
+         lda #$37
+         sta $01
+         lda #$81
+         sta $dc0d

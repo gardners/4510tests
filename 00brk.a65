@@ -1,0 +1,43 @@
+	 .include "test_top.a65"
+
+         .byte 145,"$00 - BRK"
+
+	 .include "test_prepare.a65"
+
+         ; perform one test
+next:    	 
+         ; expect SP to be decremented by 3
+	 lda sbefore
+	 sec
+	 sbc #$03
+	 sta safter
+
+	 .include "test_rom_off.a65"
+	 .include "test_setup.a65"
+
+cmd:
+         ; test instruction
+    	 brk
+
+	 ; BRK should trigger an IRQ vector entry, so this should not
+	 ; be reached.
+	 nop
+	 .include "test_rom_on.a65"
+	 jsr print
+	 .byte 13, "EXECUTION CONTINUED PAST BRK", 13, 0
+	 jmp error
+
+brkroutine:
+	 .include "test_record.a65"
+	 .include "test_rom_on.a65"
+
+	 ; check stack contents are correct
+	 
+
+	 ; do standard checks
+	 .include "test_check.a65"	 
+
+	 ; name of next test
+name:    .byte "01ORA"
+
+	 .include "test_common.a65"
