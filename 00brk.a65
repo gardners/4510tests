@@ -17,7 +17,7 @@ next:
 	 lda sbefore
 	 sec
 	 sbc #$03
-	 sta safter
+	 sta sresult
 
 	 .include "test_rom_off.a65"
 
