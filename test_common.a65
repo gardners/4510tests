@@ -1,6 +1,27 @@
-	 
-nameend: 
-         .byte 0
+         ; restore all registers and stack
+saves:   ldx #0
+         txs
+         ldx #0
+s1:      lda $1000,x
+         sta $0100,x
+         inx
+         bne s1
+
+         ; announce success
+         jsr print
+         .byte " - OK"
+         .byte 13,0
+         ; decide whether to auto-load next
+         ; test
+         lda 2
+         beq load
+wait:    jsr $ffe4
+         beq wait
+         jmp $8000
+
+         ; load next test
+load:    jsr printname
+	 	 
          lda #0
          sta $0a
          sta $b9
