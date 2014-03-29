@@ -1,6 +1,10 @@
-         ; load registers for test
+         ; load registers for test	 
 	 see
-	 ldx sbefore
+	 lda pbefore
+	 and #$20
+	 bne set1
+	 cle
+set1:	 ldx sbefore
 	 txs
          lda pbefore
          pha
