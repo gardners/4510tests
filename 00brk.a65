@@ -20,7 +20,6 @@ next:
 	 sta safter
 
 	 .include "test_rom_off.a65"
-	 .include "test_setup.a65"
 
 	 ; write IRQ vector
 	 lda #<brkroutine
@@ -28,6 +27,8 @@ next:
 	 lda #>brkroutine
 	 sta $FFFF
 
+	 ; load registers for test
+	 .include "test_setup.a65"
 cmd:
          ; test instruction
     	 brk
