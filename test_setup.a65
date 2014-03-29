@@ -1,5 +1,7 @@
          ; load registers for test
 	 see
+	 ldx sbefore
+	 txs
          lda pbefore
          pha
 	 lda bbefore
