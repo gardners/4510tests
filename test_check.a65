@@ -1,6 +1,8 @@
 
          ; check that result matches
          jsr check
+	 jsr print
+	 .byte "OK",13,0
 
          ; update registers for next test
          dec sbefore

@@ -6,6 +6,13 @@
 
          ; perform one test
 next:    	 
+	 jsr print
+         .byte 13
+         .byte "NEXT    ", 0
+         ldx #<dbefore
+         ldy #>dbefore
+         jsr showregs
+
          ; expect SP to be decremented by 3
 	 lda sbefore
 	 sec
@@ -14,6 +21,12 @@ next:
 
 	 .include "test_rom_off.a65"
 	 .include "test_setup.a65"
+
+	 ; write IRQ vector
+	 lda #<brkroutine
+	 sta $FFFE
+	 lda #>brkroutine
+	 sta $FFFF
 
 cmd:
          ; test instruction
@@ -33,7 +46,6 @@ brkroutine:
 
 	 ; check stack contents are correct
 	 
-
 	 ; do standard checks
 	 .include "test_check.a65"	 
 

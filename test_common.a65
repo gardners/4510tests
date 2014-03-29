@@ -67,6 +67,7 @@ check:   ; check that
          rts
 
 error:   jsr print
+	 .byte 13,"        D  A  B  X  Y  Z  FLAGS    SP"
          .byte 13
          .byte "BEFORE  ", 0
          ldx #<dbefore
@@ -101,8 +102,6 @@ showregs: stx 172
          ldy #0
          lda (172),y
          jsr hexb
-         lda #32
-         jsr $ffd2
          lda #32
          jsr $ffd2
          iny
