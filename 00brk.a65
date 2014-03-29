@@ -19,6 +19,17 @@ next:
 	 sbc #$03
 	 sta sresult
 
+	 ; D value here is the low byte of the return address pushed
+	 ; to the stack, which should be one byte after the BRK, i.e.,
+	 ; cmd+2
+	 lda #<cmd+2
+	 sta dresult
+
+	 ; expect I flag to be set
+         lda pbefore
+	 ora #$04
+	 sta presult
+
 	 .include "test_rom_off.a65"
 
 	 ; write IRQ vector
@@ -43,6 +54,13 @@ cmd:
 
 brkroutine:
 	 .include "test_record.a65"
+
+	 ; get D result from the stack
+	 inx
+	 inx
+	 lda $100,x
+	 sta dafter	 
+
 	 .include "test_rom_on.a65"
 
 	 ; check stack contents are correct
