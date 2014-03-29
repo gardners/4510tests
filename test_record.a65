@@ -3,7 +3,7 @@
          php
          cld
          sta aafter
-	 tab
+	 tba
 	 sta bafter
          stx xafter
          sty yafter
