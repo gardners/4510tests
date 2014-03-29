@@ -11,5 +11,5 @@ all:	4510test.d81
 	rm 4510tests.d81
 	cbmconvert -D8 4510tests.d81 -n " start" ld?? ld??? st?? st??? t??n ph?n pl?n
 
-%:	%.a65
+%:	%.a65 test_*.a65
 	$(ophis) -4 $< -o $@
