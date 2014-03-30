@@ -88,8 +88,17 @@ l2:
 
 	 ; print results
 	 
-	 ; C64 completes 27889 = 108*256+241 loops in 60 frames.
-	 
+	 ; PAL C64 completes 27889 = 108*256+241 loops in 60 frames.
+	 ; NTSC C64 completes ~5/6 of that = 90*256+201.
+	 lda b0
+	 sta n0
+	 lda b1
+	 sta n1
+	 lda b2
+	 sta n2
+	 lda b3
+	 sta n3
+
 	 lda #$00
 	 sta s0
 	 sta s1
@@ -129,6 +138,46 @@ donespeed:
 	 ldy #>msg
 	 jsr $ab1e
 
+	 lda #$00
+	 sta s0
+	 sta s1
+l4:
+	 ; subtract number of cycles a real NTSC C64 performs
+	 sec
+	 lda n0
+	 sbc #180    ; could be 201, but lets allow a little bit of margin
+	 sta n0
+	 lda n1
+	 sbc #90
+	 sta n1
+	 lda n2
+	 sbc #$00
+	 sta n2
+	 lda n3
+	 sbc #$00
+	 sta n3
+
+	 lda n3
+	 bmi donespeed2
+
+	 inc s0
+	 bne l4
+	 inc s1
+	 jmp l4
+
+donespeed2:
+	 lda #$0d
+	 jsr $ffd2
+
+	 lda s1
+	 ldx s0
+	 jsr $bdcd
+
+	 lda #<msgntsc
+	 ldy #>msgntsc
+	 jsr $ab1e
+
+
 	 rts
 
 irq:
@@ -144,9 +193,16 @@ b0:		.byte 0
 b1:		.byte 0
 b2:		.byte 0
 b3:		.byte 0
+n0:		.byte 0
+n1:		.byte 0
+n2:		.byte 0
+n3:		.byte 0
 
 msg:
 	.byte "X PAL C64 INSTRUCTIONS/FRAME"
+	.byte 13,0
+msgntsc:
+	.byte "X NTSC C64 INSTRUCTIONS/FRAME"
 	.byte 13,0
 
 	.scend
