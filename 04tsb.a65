@@ -40,6 +40,6 @@ jmpnext: bne next
 
 	 ; name of next test
 printname: jsr print
-name:    .byte "01ORA"
+name:    .byte "05ORA"
 nameend: .byte 0
 	 rts
