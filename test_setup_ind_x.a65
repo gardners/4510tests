@@ -1,0 +1,21 @@
+	; OPC ($nn,X) setup
+
+	; write D to $2000	
+	lda dbefore
+	sta $2000
+
+	; make ($FD) point to $2000
+	lda #<$2000
+	sta $FD
+	lda #>$2000
+	sta $FE
+
+	; organise so that it always points to ($FD) -> $2000
+	; this means that the operand to the instruction needs to be
+	; #$FD - X
+	lda xbefore
+	eor #$ff
+	clc
+	adc #$fd
+	sta cmd+1
+	

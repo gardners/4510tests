@@ -1,0 +1,32 @@
+	; OR can be built from NAND gates:
+	; e.g., http://www.instructables.com/id/OR-gate-from-NAND-gate/
+	; this means we can build OR from AND and XOR (using XOR #$ff as NOT)
+
+	; A or B = not ( (not A) AND (not B) )
+	; let's check that with truth tables.
+
+	; OR: 
+	; A B O
+	; 0 0 0
+	; 0 1 1
+	; 1 0 1
+	; 1 1 1
+
+	; A B (not A) (not B) ((not A) AND (not B)) not(...)
+	; 0 0 1       1       1                     0
+	; 0 1 1       0       0                     1
+	; 1 0 0       1       0                     1
+	; 1 1 0       0       0                     1
+
+	; Good, they match, so now implement that
+
+	lda dbefore
+	eor #$ff
+	sta temp1
+	lda abefore
+	eor #$ff
+	and temp1
+	eor #$ff
+	sta dresult
+
+	

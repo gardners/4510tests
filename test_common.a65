@@ -60,6 +60,10 @@ zresult:      .byte 0
 presult:      .byte 0
 sresult:      .byte 0
 
+temp1:	      .byte 0
+temp2:	      .byte 0
+temp3:	      .byte 0	    
+
 check:   ; check that
          lda dafter
          cmp dresult
