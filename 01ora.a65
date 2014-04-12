@@ -12,9 +12,6 @@ next:
 	 .include "test_setup_ind_x.a65"
 
 	 .include "test_setup_alu_or.a65"
-	 ; expect A to be (A or D)
-	 ; of course, we shouldn't use ORA to do this.
-	 ; OR can be built from NAND
 
 	 ; load registers for test
 	 .include "test_setup.a65"
