@@ -1,0 +1,9 @@
+	; OPC $nn setup
+
+	; put data value into a zero page location
+	lda dbefore
+	sta $fd
+
+	; make opcode point to said zero page location
+	lda #$fd
+	sta cmd+1
