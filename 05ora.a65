@@ -23,8 +23,6 @@ cmd:
 
 	 .include "test_record.a65"
 
-	 .include "test_rom_on.a65"
-
 	 ; do standard checks
 	 jsr check
 
