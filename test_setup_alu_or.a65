@@ -33,6 +33,11 @@
 	lda presult
 	ora #%10000000
 	sta presult
+*	lda aresult
+	bne +
+	lda presult
+	ora #%00000010
+	sta presult
 *
 
 	
