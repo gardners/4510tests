@@ -1,0 +1,36 @@
+	 .include "test_top.a65"
+
+         .byte 145,"$06 - ASL $NN"
+
+	 .include "test_prepare.a65"
+
+         ; perform one test
+next:    	 
+	 .include "test_setup_identity.a65"
+
+	 .include "test_setup_zp.a65"
+
+	 .include "test_setup_rmw_asl.a65"
+
+	 ; load registers for test
+	 .include "test_setup.a65"
+cmd:
+         ; test instruction
+    	 ASL $00
+
+	 .include "test_record.a65"
+	 .include "test_record_zp.a65"
+
+	 .include "test_rom_on.a65"
+
+	 ; do standard checks
+	 jsr check
+
+	 .include "test_next_alu.a65"
+	 .include "test_common.a65"
+
+	 ; name of next test
+printname: jsr print
+name:    .byte "07RMB0"
+nameend: .byte 0
+	 rts

@@ -1,0 +1,32 @@
+	; expect D to be shifted left one bit
+	lda dbefore
+	clc
+	rol           ; use ROL so that we are independent from ASL
+	sta dresult
+
+	; by default C, N and Z are not set ...
+	lda presult	
+	and #%01111100	
+	sta presult
+
+	lda dresult
+	and #$80
+	beq +
+	; set N if bit 7 set in result
+	lda presult
+	ora #%10000000
+	sta presult
+*	; set Z if result equals 0
+	lda dresult
+	bne +
+	lda presult
+	ora #%00000010
+	sta presult
+*	lda dbefore
+	and #$80
+	beq +
+	lda presult
+	ora #%00000001
+	sta presult
+*
+

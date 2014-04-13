@@ -1,0 +1,2 @@
+	lda $fd
+	sta dafter
