@@ -15,6 +15,10 @@ next:
 	 ora abefore
 	 sta dresult
 
+	 lda pbefore
+	 ora #%00010000
+	 sta presult	 
+
 	 ; set Z flag if required (but TSB doesn't touch N)
 	 ; note that for TSB/TRB the criteria for Z is the intersect
 	 ; between A and D, not whether the result is zero (since for
