@@ -33,7 +33,6 @@
 	and temp1
 	eor #$ff
 	sta aresult
-	sta $0426
 	and #$80
 	beq +
 	lda presult

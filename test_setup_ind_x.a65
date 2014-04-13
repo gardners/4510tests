@@ -18,5 +18,4 @@
 	sec
 	adc #$fd
 	sta cmd+1
-	sta $0427
 	
