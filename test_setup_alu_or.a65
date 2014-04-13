@@ -3,6 +3,11 @@
 	sta dafter
 	sta dresult
 
+	; by default N and Z are not set ...
+	lda presult	
+	and #%01111101	
+	sta presult
+
 	; OR can be built from NAND gates:
 	; e.g., http://www.instructables.com/id/OR-gate-from-NAND-gate/
 	; this means we can build OR from AND and XOR (using XOR #$ff as NOT)
@@ -35,14 +40,11 @@
 	sta aresult
 	and #$80
 	beq +
+	; set N if bit 7 set in result
 	lda presult
 	ora #%10000000
 	sta presult
-*	; by default Z is not set ...
-	lda presult	
-	and #%11111101	
-	sta presult
-	; ... unless result equals 0
+*	; set Z if result equals 0
 	lda aresult
 	bne +
 	lda presult
