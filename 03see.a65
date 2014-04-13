@@ -6,11 +6,14 @@
 
          ; perform one test
 next:    	 
-         ; D has no meaning for this flag change instruction
+         ; D is unaffected by this instruction.
+	 lda dbefore
+	 sta dafter
+	 sta dresult
 
 	 ; This is the only instruction that can clear the E flag
 	 lda pbefore
-	 and #%00100000
+	 ora #%00110000	 ; and set B flag as well
 	 sta presult
 
 	 ; load registers for test
@@ -26,14 +29,7 @@ cmd:
 	 ; do standard checks
 	 jsr check
 
-	 ; iterate to next test
-	 ; (try all values of SP and processor flags)
-         dec sbefore
-         ; if not finished, then do next test
-jmpnext: bne next
-         inc pbefore
-         bne jmpnext
-
+	 .include "test_next_sp_and_p.a65"
 	 .include "test_common.a65"
 
 	 ; name of next test
