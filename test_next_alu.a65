@@ -1,17 +1,29 @@
 	 ; iterate to next test
 	 ; cycle through A, D and P values
+
+
+	 ; Cycle through 16 values of A
 	 lda abefore
 	 clc
 	 adc #$11
 	 sta abefore
-	 cmp #$c6
-         ; if not finished, then do next test
-jmpnext: bne next
+	 lda iter1
+	 clc
+	 adc #$01
+	 sta iter1
+	 and #$0f
+	 bne next
+
+	 ; cycle through 16 values of D
 	 lda dbefore
 	 clc
-	 adc #$11
+	 adc #$13
 	 sta dbefore
-	 cmp #$1b
-         bne jmpnext
-	 inc pbefore
-	 bne jmpnext
+	 lda iter1
+	 and #$f0
+	 bne next
+
+	 ; Cycle through all values of P
+	 inc pbefore	 
+	 lda pbefore
+	 bne next
