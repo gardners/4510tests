@@ -39,7 +39,12 @@
 	lda presult
 	ora #%10000000
 	sta presult
-*	lda aresult
+*	; by default Z is not set ...
+	lda presult	
+	and #%11111101	
+	sta presult
+	; ... unless result equals 0
+	lda aresult
 	bne +
 	lda presult
 	ora #%00000010
