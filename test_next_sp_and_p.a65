@@ -1,0 +1,9 @@
+	 ; iterate to next test
+	 ; (try all values of SP and processor flags)
+         dec sbefore
+         dec sresult
+         ; if not finished, then do next test
+jmpnext: bne next
+         inc pbefore
+         bne jmpnext
+
