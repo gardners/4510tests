@@ -1,0 +1,17 @@
+	 ; iterate to next test
+	 ; cycle through A, D and P values
+	 lda abefore
+	 clc
+	 adc #$11
+	 sta abefore
+	 cmp #$c6
+         ; if not finished, then do next test
+jmpnext: bne next
+	 lda dbefore
+	 clc
+	 adc #$11
+	 sta dbefore
+	 cmp #$1b
+         bne jmpnext
+	 inc pbefore
+	 bne jmpnext
