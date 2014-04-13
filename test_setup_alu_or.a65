@@ -1,3 +1,8 @@
+	; for ORA, we don't expect the data value to hold anything
+	lda #$00
+	sta dafter
+	sta dresult
+
 	; OR can be built from NAND gates:
 	; e.g., http://www.instructables.com/id/OR-gate-from-NAND-gate/
 	; this means we can build OR from AND and XOR (using XOR #$ff as NOT)
@@ -28,6 +33,7 @@
 	and temp1
 	eor #$ff
 	sta aresult
+	sta $0426
 	and #$80
 	beq +
 	lda presult
@@ -40,4 +46,3 @@
 	sta presult
 *
 
-	
