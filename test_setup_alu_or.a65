@@ -27,6 +27,12 @@
 	eor #$ff
 	and temp1
 	eor #$ff
-	sta dresult
+	sta aresult
+	and #$80
+	beq +
+	lda presult
+	ora #%10000000
+	sta presult
+*
 
 	
