@@ -19,6 +19,9 @@ next:
 	 ; note that for TSB/TRB the criteria for Z is the intersect
 	 ; between A and D, not whether the result is zero (since for
 	 ; TSB it will be the union)
+	 lda presult
+	 and #%11111101
+	 sta presult
 	 lda dbefore
 	 and abefore
 	 bne +
