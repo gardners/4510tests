@@ -1,0 +1,15 @@
+	; ouputs by default match inputs
+	lda abefore
+	sta aresult
+	lda bbefore
+	sta bresult
+	lda xbefore
+	sta xresult
+	lda ybefore
+	sta yresult
+	lda zbefore
+	sta zresult
+	lda sbefore
+	sta sresult
+	lda pbefore
+	sta presult
