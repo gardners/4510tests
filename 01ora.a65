@@ -6,7 +6,6 @@
 
          ; perform one test
 next:    	 
-	 inc $0410
          ; D value is the value stored in the memory address being
 	 ; used, and which gets written into the operand of the
 	 ; instruction
@@ -30,13 +29,7 @@ cmd:
 	 ; do standard checks
 	 jsr check
 
-	 ; iterate to next test
-	 ; (try all values of SP and processor flags)
-         dec sbefore
-         ; if not finished, then do next test
-jmpnext: bne next
-         inc pbefore
-         bne jmpnext
+	 .include "test_next_alu.a65"
 
 	 .include "test_common.a65"
 
