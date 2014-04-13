@@ -7,8 +7,13 @@
 	 .byte $97, "2,0:", $9e, " 2014", $AA, "65",0      ; POKE 2,0 : SYS 2014+65
 _next:	 .word 0
 
+iter1:	 .byte 0
+
 	 .checkpc 2079
 	 .advance 2079
+
+	 lda #$00
+	 sta iter1
 
 	 ; print name of this test
          jsr print
