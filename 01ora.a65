@@ -6,9 +6,13 @@
 
          ; perform one test
 next:    	 
+	 inc $0410
          ; D value is the value stored in the memory address being
 	 ; used, and which gets written into the operand of the
 	 ; instruction
+
+	 .include "test_setup_identity.a65"
+
 	 .include "test_setup_ind_x.a65"
 
 	 .include "test_setup_alu_or.a65"
