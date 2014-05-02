@@ -3,29 +3,16 @@
          .byte 145,"$05 - ORA $NN"
 
 	 .include "test_prepare.a65"
-
-         ; perform one test
 next:    	 
-         ; D value is the value stored in the memory address being
-	 ; used, and which gets written into the operand of the
-	 ; instruction
 	 .include "test_setup_identity.a65"
-
 	 .include "test_setup_zp.a65"
-
 	 .include "test_setup_alu_or.a65"
-
-	 ; load registers for test
 	 .include "test_setup.a65"
-cmd:
-         ; test instruction
+cmd:	 ; instruction under test
     	 ORA $00
 
 	 .include "test_record.a65"
-
-	 ; do standard checks
 	 jsr check
-
 	 .include "test_next_alu.a65"
 	 .include "test_common.a65"
 
