@@ -1,7 +1,7 @@
 ophis=	/Users/gardners/Projects/c64accel/git/Ophis/bin/ophis
 
 PROGRAMS=	00brk 01ora 02cle 03see 04tsb 05ora 06asl 07rmb0 \
-		08php
+		08php 09ora
 
 all:	4510test.d81
 

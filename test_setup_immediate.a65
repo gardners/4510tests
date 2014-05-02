@@ -1,0 +1,5 @@
+	; OPC #$nn setup
+
+	; put data value into a zero page location
+	lda dbefore
+	sta cmd+1
